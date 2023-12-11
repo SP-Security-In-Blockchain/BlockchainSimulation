@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blockchain</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css">
+
+    <style>
+        .navbar {
+            background-color: transparent !important;
+            border: none !important;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+
+        .navbar-collapse {
+            justify-content: center;
+        }
+
+        .nav-link {
+            background-color: #7252c7;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px 10px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover, .nav-link:focus {
+            background-color: #5f39a3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .navbar-brand {
+            background-color: #7252c7;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        body, .container, .card, .card-body, .navbar, .nav-link {
+            background-color: #161026;
+            color: white;
+            font-family: 'UniformProCon', sans-serif;
+        }
+
+        .btn {
+            background-color: #7252c7;
+            border: none;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #5f39a3;
+        }
+
+        .rounded-container {
+            background-color: #131212;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        textarea {
+            background-color: #161026;
+            color: white;
+            border: 1px solid #7252c7;
+            border-radius: 10px;
+        }
+
+        label {
+            color: white;
+        }
+
+        .alert {
+            background-color: #2a2a2a;
+            color: white;
+            border-radius: 10px;
+        }
+
+        #unmined_transaction_table {
+        color: white;
+        }
+
+        #mined_transaction_table {
+        color: white;
+        }
+
+        .dataTables_wrapper .dataTables_filter input,
+        .dataTables_wrapper .dataTables_length select {
+            background-color: #161026;
+            color: white;
+            border: 1px solid #7252c7;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- NAV BAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <a class="navbar-brand">Miner Client</a>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Blockchain</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/configure" class="nav-link">Configure</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TITLE SECTION -->
+    <div class="container mt-5 border-0">
+        <div class="card text-center border-0">
+            <div class="card-body">
+                <h1 class="card-title">B L O C K C H A I N</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION FOR UNMINED TRANSACTION TABLE -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="card-body">
+                    <h3 class="card-title">Transactions to be added to the next block</h3>
+                    <p class="card-text">(Not yet mined transaction list)</p>
+                    <button type="submit" id="refresh_transactions" class="btn">
+                        &#x21BB; Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LIST THE TABLE -->
+    <div class="container mt-3 border-0 rounded-container">
+        <table id="unmined_transaction_table" class="table table-bordered" cellspacing="0" width="100%">
+        </table>
+
+        <!-- MINE BUTTON -->
+        <div class="col-lg-12 text-center">
+            <input type="button" id="mine_button" class="btn" value="Mine">
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <!-- SECTION FOR THE MINED / BLOCKCHAIN TRANSACTION TABLE -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="card-body">
+                    <h3 class="card-title">Transactions on the blockchain</h3>
+                    <p class="card-text">(Mined transaction list)</p>
+                    <button type="submit" id="refresh_blockchain" class="btn">
+                        &#x21BB; Transaction
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LIST THE TABLE -->
+    <div class="container mt-3 border-0 rounded-container">
+        <table id="mined_transaction_table" class="table table-bordered" cellspacing="0" width="100%">
+        </table>
+    </div>
+
+    <!-- jQuery JS -->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <!-- Ellipsis.js JS -->
+    <script src="https://cdn.datatables.net/plug-ins/1.13.7/dataRender/ellipsis.js"></script>
+
+    <!--JAVASCRIPT TO GET THE DATA TO THE TABLE-->
+    <script>
+        $(function() {
+            // STEP 1
+            // INVOKES GET TRANSACTION METHOD
+            // Get the newly created transaction
+            $.ajax({
+                url: '/transactions/get',
+                type: 'GET',
+                headers: {'Access-Control-Allow-Origin': '*'},
+                success: function(response) {
+                    let transactions = []
+                    var count = 1
+                    for (i = 0; i<response['transactions'].length; i++){
+                        let transaction = [
+                            count,
+                            response['transactions'][i]['sender_public_key'],
+                            response['transactions'][i]['recipient_public_key'],
+                            response['transactions'][i]['amount'],
+                        ]
+                        transactions.push(transaction);
+                        count += 1
+                    }
+
+                    // STEP 2
+                    // POPULATE THE NOT YET MINED TRANSACTIONS TABLE
+                    $('#unmined_transaction_table').dataTable({
+                        data: transactions,
+                        columns: [
+                            {title: "#"},
+                            {title: "Sender Public Key"},
+                            {title: "Recipient Public Key"},
+                            {title: "Amount"},
+                        ],
+                        //Ellipsis to deal with text overflow on dataTable
+                        columnDefs: [ {
+                            targets: [1, 2, 3],
+                            render: $.fn.dataTable.render.ellipsis(25)
+                        } ]
+                    });
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+            // STEP 4 - MINE BUTTON
+            // INVOKES MINING METHOD
+            $('#mine_button').click(function() {
+                $.ajax({
+                    url: '/mine',
+                    type: 'GET',
+                    success: function(response) {
+                        window.location.reload();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            // STEP 3 - REFRESH BUTTON
+            // Update the unmined transaction
+            $('#refresh_transactions').click(function() {
+                window.location.reload();
+            });
+
+            // STEP 6 - TRANSACTION BUTTON
+            // INVOKES CONSENSUS PROTOCOL ENSURE BLOCKCHAIN ON ALL NODES THE SAME
+            $('#refresh_blockchain').click(function() {
+                $.ajax({
+                    url: '/nodes/resolve',
+                    type: 'GET',
+                    success: function(response) {
+                        window.location.reload();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            // STEP 5
+            // INVOKES GET THE BLOCKCHAIN METHOD
+            // Gets the mined transaction
+            $.ajax({
+                url: '/chain',
+                type: 'GET',
+                success: function(response) {
+                    let transactions = []
+                    let count = 1
+
+                    // First loop - iterate block by block
+                    // Second loop - iterate each transaction available in that block
+                    for (i=0; i<response['length']; i++) {
+                        for (j=0; j<response['chain'][i]['transactions'].length; j++) {
+                            // TIMESTAMP FORMAT
+                            let options = {  year: "numeric", month: "short",  day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"  };
+                            let date = new Date(response["chain"][i]["timestamp"] * 1000);
+                            formattedTimestamp = date.toLocaleTimeString('en-US', options);
+
+                            // GET TRANSACTIONS
+                            let transaction = [
+                                count,
+                                response['chain'][i]['transactions'][j]['sender_public_key'],
+                                response['chain'][i]['transactions'][j]['recipient_public_key'],
+                                response['chain'][i]['transactions'][j]['amount'],
+                                formattedTimestamp,
+                                response['chain'][i]['block_number']
+                            ]
+                            transactions.push(transaction);
+                            count += 1;
+                        }
+                    }
+
+                    //POPULATE THE MINED TRANSACTIONS TABLE
+                    $('#mined_transaction_table').dataTable({
+                        data: transactions,
+                        columns: [
+                            {title: "#"},
+                            {title: "Sender Public Key"},
+                            {title: "Recipient Public Key"},
+                            {title: "Amount"},
+                            {title: "Timestamp"},
+                            {title: "Block#"},
+                        ],
+                        //Ellipsis to deal with text overflow on dataTable
+                        columnDefs: [ {
+                            targets: [1, 2, 3, 4, 5],
+                            render: $.fn.dataTable.render.ellipsis(25)
+                        } ]
+                    });
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

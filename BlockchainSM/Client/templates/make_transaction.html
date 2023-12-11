@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Make Transaction</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css">
+
+    <style>
+        .navbar {
+            background-color: transparent !important;
+            border: none !important;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+
+        .navbar-collapse {
+            justify-content: center;
+        }
+
+        .nav-link {
+            background-color: #7252c7;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px 10px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover, .nav-link:focus {
+            background-color: #5f39a3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .navbar-brand {
+            background-color: #7252c7;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        body, .container, .card, .card-body, .navbar, .nav-link {
+            background-color: #161026;
+            color: white;
+            font-family: 'UniformProCon', sans-serif;
+        }
+
+        .btn {
+            background-color: #7252c7;
+            border: none;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #5f39a3;
+        }
+
+        .rounded-container {
+            background-color: #131212;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        textarea {
+            background-color: #161026;
+            color: white;
+            border: 1px solid #7252c7;
+            border-radius: 10px;
+        }
+
+        label {
+            color: white;
+        }
+
+        .alert {
+            background-color: #2a2a2a;
+            color: white;
+            border-radius: 10px;
+            border: 1px solid #ffffff;
+        }
+
+        .modal-content, .modal-header, .modal-body, .modal-footer {
+            background-color: #161026;
+            color: white;
+            border: none;
+        }
+
+        .modal-header .close {
+            color: white;
+        }
+
+        .modal-footer .btn {
+            background-color: #7252c7;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- NAV BAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <a class="navbar-brand">User Client</a>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Wallet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/make/transaction" class="nav-link">Make Transaction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/view/transaction" class="nav-link">View Transaction</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TITLE SECTION -->
+    <div class="container mt-5 border-0">
+        <div class="card text-center border-0">
+            <div class="card-body">
+                <h1 class="card-title">S E N D - C R Y P T O</h1>
+                <h5 class="card-title">Supported Currency : BTC | ETH | DOGE</h5>
+                <p class="card-text">To make transactions please enter your info, recipient address and amount</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRANSACTION DETAILS INPUT FIELD -->
+    <div class="container mt-1 border-0 rounded-container">
+        <form id="transaction_form">
+            <div class="row">
+                <h5 class="col-sm-3">Sender Public Key</h5>
+                <div class="col-sm-12">
+                    <input type="text" name="sender_public_key" id="sender_public_key" class="form-control">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <h5 class="col-sm-3">Sender Private Key</h5>
+                <div class="col-sm-12">
+                    <input type="text" name="sender_private_key" id="sender_private_key" class="form-control">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <h5 class="col-sm-3">Recipient Public Key</h5>
+                <div class="col-sm-12">
+                    <input type="text" name="recipient_public_key" id="recipient_public_key" class="form-control">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <h5 class="col-sm-3">Amount</h5>
+                <div class="col-sm-12">
+                    <input type="text" name="amount" id="amount" class="form-control">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <input type="button" name="generate_transaction" id="generate_transaction" class="btn btn-lg" value="Generate Transaction">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- TRANSACTION CONFIRMATION FORM  -->
+    <div class="modal modal-alert fade" id="C_Message" tabindex="-1" role="dialog" aria-labelledby="C_Message" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header">
+                    <div class="modal-title col-md-10">Confirm your transaction details, enter a blockchain node url and click on "Confirm Transaction"</div>
+                    <button type="button" class="close col-md-2" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <!-- Body -->
+                <div class="modal-body">
+                    <form id="confirmation_transaction_form">
+                        <div class="row">
+                            <label class="col-sm-12">Sender Public Key:</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="confirmation_sender_public_key" id="confirmation_sender_public_key" rows="2" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-12">Recipient Public Key:</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="confirmation_recipient_public_key" id="confirmation_recipient_public_key" rows="2" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-12">Amount to Send:</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="confirmation_amount" id="confirmation_amount" rows="2" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-12">Transaction Signature:</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="transaction_signature" id="transaction_signature" rows="2" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-12">Blockchain Node URL:</label>
+                            <div class="col-sm-12">
+                                <!-- This blockchain node URL is the resource to accept the transaction -->
+                                <input type="text" name="node_url" id="node_url" rows="2" class="form-control" value="http://127.0.0.1:1001">
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                            <!-- CONFIRMATION BUTTON TO SEND THIS TRANSACTION TO THE UNMINED TRANSACTION TABLE -->
+                            <button type="button" id="button_confirm_transaction" class="btn">Confirm Transaction</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery JS -->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+    <!--JAVASCRIPT TO HANDLE BUTTON CLICK EVENT-->
+    <script>
+        $(function() {
+            // STEP 1 - GENERATE TRANSACTION BUTTON
+            // INVOKES TRANSACTION GENERATION METHOD
+            // collect user inputs
+            $("#generate_transaction").click(function() {
+                $.ajax({
+                    url: "/generate/transaction",
+                    type: "POST",
+                    dataType: 'json',
+                    data: $('#transaction_form').serialize(),
+
+                    // Getting all transaction details
+                    success: function(response) {
+                        document.getElementById('confirmation_sender_public_key').value = response['transaction']['sender public key'];
+                        document.getElementById('confirmation_recipient_public_key').value = response['transaction']['recipient public key'];
+                        document.getElementById('confirmation_amount').value = response['transaction']['amount'];
+                        document.getElementById('transaction_signature').value = response['signature'];
+                        // Show confirmation form with all transaction details
+                        $('#C_Message').modal('show');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            // STEP 2 CONFIRM TRANSACTION BUTTON
+            // INVOKE CREATE NEW TRANSACTION METHOD
+            // Then send the transaction to unmined table list
+            $("#button_confirm_transaction").click(function() {
+                $.ajax({
+                    url: document.getElementById('node_url').value + "/transactions/new",
+                    type: "POST",
+                    dataType: 'json',
+                    // headers: {'Access-Control-Allow-Origin': '*'},
+                    data: $('#confirmation_transaction_form').serialize(),
+
+                    // After transaction successfully processed clear the form fields. This prepares the form for a new transaction
+                    success: function(response) {
+                        $('#sender_public_key').val('');
+                        $('#sender_private_key').val('');
+                        $('#recipient_public_key').val('');
+                        $('#amount').val('');
+                        // Hide confirmation form
+                        $('#C_Message').modal('hide');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
