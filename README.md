@@ -1,8 +1,8 @@
 # Blockchain Simulation 
-A blockchain simulation developed that can simulate the behavior of a real-world blockchain and how transactions are processed in it.  
+A blockchain simulation that can simulate the behavior of a real-world blockchain and how transactions are processed in it.  
 
 # Security Implementation 
-- RSA-2048 Key Generation
+- RSA-2048 key generation
 - SHA-256 hash function for blocks and transaction signatures
 - Proof-of-Work consensus mechanism
 
@@ -15,13 +15,11 @@ https://medium.com/coinmonks/python-tutorial-build-a-blockchain-713c706f6531
 
 https://www.javatpoint.com/building-a-blockchain-using-python  
 
-https://www.geeksforgeeks.org/create-simple-blockchain-using-python/  
 
 https://medium.com/@vanflymen/learn-blockchains-by-building-one-117428612f46 
 
 https://www.analyticsvidhya.com/blog/2022/06/building-a-blockchain-in-python/ 
 
-https://www.educative.io/answers/how-to-create-a-simple-blockchain-with-python 
 
  
 
@@ -36,8 +34,6 @@ https://dev.to/aaronktberry/generating-encrypted-key-pairs-in-python-69b
 https://www.easydevguide.com/posts/python_rsa_keys 
 
 https://gist.github.com/gabrielfalcao/de82a468e62e73805c59af620904c124 
-
-https://stuvel.eu/python-rsa-doc/usage.html 
 
  
 
